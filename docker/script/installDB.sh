@@ -13,14 +13,14 @@ mysqlCommand="mysql -u root -h database"
 found=FALSE
 today=$(date +%Y-%m-%d_%Hh%Mm%Ss)
 
-if [ -f "/var/www/html/dump/$BD" ]; then
+if [ -f "/var/www/html/docker/dumb/$BD" ]; then
     found=TRUE
-    BD="/var/www/html/dump/$BD"
+    BD="/var/www/html/docker/dump/$BD"
   else
-    if cd /var/www/html/dump; then
+    if cd /var/www/html/docker/dump; then
         lastelement=$(ls *.sql.gz | tail -1)
         found=TRUE
-        BD="/var/www/html/dump/$lastelement"
+        BD="/var/www/html/docker/dump/$lastelement"
         else
           echo "No backup BD found"
           exit

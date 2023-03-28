@@ -20,8 +20,8 @@ if cd dump; then
   if [ $lastelement ]; then
       mysqlCommand="mysql -u root -h database"
       #echo "- backup GCS BD"
-      #mysqldump -u root -h database --databases $DATABASE_NAME --default-character-set=utf8 > /var/www/html/dump/backup-$today.sql
-      #gzip /var/www/html/dump/backup-$today.sql
+      #mysqldump -u root -h database --databases $DATABASE_NAME --default-character-set=utf8 > /var/www/html/docker/dump/backup-$today.sql
+      #gzip /var/www/html/docker/dump/backup-$today.sql
       echo "- drop database if exists $DATABASE_NAME"
       $mysqlCommand -e "drop database if exists $DATABASE_NAME"
       echo "- create database $DATABASE_NAME"

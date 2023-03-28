@@ -12,10 +12,10 @@ BD=$1
 mysqlCommand="mysql -u root -h database"
 today=$(date +%Y-%m-%d_%Hh%Mm%Ss)
 
-mkdir -p /var/www/html/dump
+mkdir -p /var/www/html/docker/dump
 echo "- backup database"
-mysqldump -u root -h database --databases $DATABASE_NAME --default-character-set=utf8 >/var/www/html/dump/backup-$today.sql
-gzip /var/www/html/dump/backup-$today.sql
+mysqldump -u root -h database --databases $DATABASE_NAME --default-character-set=utf8 >/var/www/html/docker/dump/backup-$today.sql
+gzip /var/www/html/docker/dump/backup-$today.sql
 echo "*** end fonction ***"
 end_time=$(date +%s)
 elapsed=$((end_time - start_time))
