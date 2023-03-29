@@ -61,7 +61,7 @@ COPY . /var/www/html
 RUN chown -R www-data:www-data /var/www/html
 
 #composer install -n --prefer-dist --no-dev
-#RUN composer install --optimize-autoloader
+RUN composer install --optimize-autoloader
 #RUN composer install -n --prefer-dist --no-dev
 
 # Configure drush

@@ -11,31 +11,20 @@ echo "**** Start install project CGS *****"
 if [ ! -f /var/www/html/web/sites/default/settings.php ]; then
     echo "Setting config"
     cp /var/www/html/docker/config/settings.php /var/www/html/web/sites/default/settings.php
+    cp /var/www/html/docker/config/services.yml /var/www/html/web/sites/default/services.yml
 fi
 
-today=$(date +%Y-%m-%d_%Hh%Mm%Ss)
-if cd dump; then
-  lastelement=$(ls ./backup-*.sql.gz | tail -1)
-  echo "Importation du plus récent sql.gz ($lastelement)"
-  if [ $lastelement ]; then
-      mysqlCommand="mysql -u root -h database"
-      #echo "- backup GCS BD"
-      #mysqldump -u root -h database --databases $DATABASE_NAME --default-character-set=utf8 > /var/www/html/docker/dump/backup-$today.sql
-      #gzip /var/www/html/docker/dump/backup-$today.sql
-      echo "- drop database if exists $DATABASE_NAME"
-      $mysqlCommand -e "drop database if exists $DATABASE_NAME"
-      echo "- create database $DATABASE_NAME"
-      $mysqlCommand -e "create database $DATABASE_NAME"
-      cat $lastelement | gunzip -c - | $mysqlCommand $DATABASE_NAME
-    else
-      echo "No backup BD found"
-      exit
-  fi
-else
-  echo "missing BD parameters"
-fi
-  end_time=$(date +%s)
-  elapsedBD=$(( end_time - start_time ))
+mysqlCommand="mysql -u root -h database"
+#echo "- backup GCS BD"
+#mysqldump -u root -h database --databases $DATABASE_NAME --default-character-set=utf8 > /var/www/html/docker/dump/backup-$today.sql
+#gzip /var/www/html/docker/dump/backup-$today.sql
+echo "- drop database if exists $DATABASE_NAME"
+$mysqlCommand -e "drop database if exists $DATABASE_NAME"
+echo "- create database $DATABASE_NAME"
+$mysqlCommand -e "create database $DATABASE_NAME"
+cat /var/www/html/docker/dump/backup.sql.gz | gunzip -c - | $mysqlCommand $DATABASE_NAME
+end_time=$(date +%s)
+elapsedBD=$(( end_time - start_time ))
 
 cd /var/www/html
 #echo "Composer install"

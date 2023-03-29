@@ -1,6 +1,6 @@
 version: "3.9"
 volumes:
-  db-volume-gcs:
+  db-volume:
   redis-cache:
 services:
   web:
@@ -40,7 +40,7 @@ services:
       - MYSQL_PASSWORD=${DATABASE_PASS}
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
     volumes:
-      - db-volume-gcs:/var/lib/mysql:delegated
+      - db-volume:/var/lib/mysql:delegated
   phpmyadmin:
     image: phpmyadmin
     restart: always

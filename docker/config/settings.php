@@ -800,9 +800,25 @@ $redis_port = trim(file_get_contents('/var/run/secrets/vdmtl/redis/port'), "\r\n
 $redis_password = $redis_password === '' ? NULL : $redis_password;
 
 # Configuration Redis for the cache
-$settings['redis.connection']['host'] = $redis_host;
-$settings['redis.connection']['password'] = $redis_password;
-$settings['redis.connection']['port'] = $redis_port;
-$settings['redis.connection']['instance']  = 'cache';
-$settings['redis.connection']['interface'] = 'PhpRedis';
-$settings['cache']['default'] = 'cache.backend.redis';
+try {
+  $redis = new Redis();
+  $redis->connect($redis_host, $redis_port);
+  if ($redis->IsConnected()) {
+    $redis->auth($redis_password);
+    $response = $redis->ping();
+    if ($response) {
+      # Configuration Redis for the cache
+      $settings['redis.connection']['host'] = $redis_host;
+      $settings['redis.connection']['password'] = $redis_password;
+      $settings['redis.connection']['port'] = $redis_port;
+      $settings['redis.connection']['instance']  = 'cache';
+      $settings['redis.connection']['interface'] = 'PhpRedis';
+      $settings['cache']['default'] = 'cache.backend.redis';
+      $settings['container_yamls'][] = 'modules/redis/example.services.yml';
+      $conf['redis_perm_ttl'] = 2592000;
+      $settings['redis_compress_length'] = 100;
+      $settings['redis_compress_level'] = 3;
+    }
+  }
+}catch(Exception $e) {
+}
